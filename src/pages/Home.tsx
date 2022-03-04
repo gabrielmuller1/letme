@@ -1,50 +1,71 @@
-import { useHistory } from "react-router-dom";
-
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { auth, firebase } from "../services/firebase";
 
-import illustrationImg from "../assets/images/illustration.svg";
-import logoImg from "../assets/images/logo.svg";
-import googleIconImg from "../assets/images/google-icon.svg";
+type User = {
+  id: string;
+  name: string;
+  avatar: string;
+};
 
-import "../styles/auth.scss";
-import { Button } from "../components/Button";
+type AuthContextType = {
+  user: User | undefined;
+  signInWithGoogle: () => Promise<void>;
+};
 
-export function Home() {
-  const history = useHistory();
+type AuthContextProviderProps = {
+  children: ReactNode;
+};
 
-  function handleCreateRoom() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).then((result) => {
-      console.log(result);
+export const AuthContext = createContext({} as AuthContextType);
+
+export function AuthContextProvider(props: AuthContextProviderProps) {
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const { displayName, photoURL, uid } = user;
+
+        if (!displayName || !photoURL) {
+          throw new Error("Missing information from Google Account.");
+        }
+
+        setUser({
+          id: uid,
+          name: displayName,
+          avatar: photoURL,
+        });
+      }
     });
 
-    history.push("rooms/news");
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  async function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    const result = await auth.signInWithPopup(provider);
+
+    if (result.user) {
+      const { displayName, photoURL, uid } = result.user;
+
+      if (!displayName || !photoURL) {
+        throw new Error("Missing information from Google Account.");
+      }
+
+      setUser({
+        id: uid,
+        name: displayName,
+        avatar: photoURL,
+      });
+    }
   }
 
   return (
-    <div id="page-auth">
-      <aside>
-        <img
-          src={illustrationImg}
-          alt="Ilustação simbolizando perguntas e respostas"
-        />
-        <strong> Crie salas de Q&amp;A ao-vivo</strong>
-        <p>Tire as dúvidas da sua audiência em tempo-real</p>
-      </aside>
-      <main>
-        <div className="main-content">
-          <img src={logoImg} alt="Letmeask Icon" />
-          <button onClick={handleCreateRoom} className="create-room">
-            <img src={googleIconImg} alt="Google Icon" />
-            Crie sua sala com o Google
-          </button>
-          <div className="separator">ou entre em uma sala</div>
-          <form>
-            <input type="text" placeholder="Digite o código da sala" />
-            <Button type="submit">Entrar na sala</Button>
-          </form>
-        </div>
-      </main>
-    </div>
+    <AuthContext.Provider value={{ user, signInWithGoogle }}>
+      {props.children}
+    </AuthContext.Provider>
   );
 }
