@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { NewRoom } from "./pages/NewRoom";
 
-import { AuthContextProvider } from "./contexts/AuthContext"
+import { AuthContextProvider } from "./contexts/AuthContext";
 
 type User = {
   id: string;
@@ -24,8 +24,8 @@ function App() {
     <BrowserRouter>
       <AuthContextProvider>
         <Route path="/" exact component={Home} />
-        <Route path="/rooms/news" component={NewRoom} />      
-        </AuthContextProvider>     
+        <Route path="/rooms/news" component={NewRoom} />
+      </AuthContextProvider>
     </BrowserRouter>
   );
 }

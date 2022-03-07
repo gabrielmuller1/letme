@@ -1,8 +1,4 @@
-import { useContext } from "react";
 import { useHistory } from "react-router-dom";
-
-import { AuthContext } from "../contexts/AuthContext";
-import { auth, firebase } from "../services/firebase";
 
 import illustrationImg from "../assets/images/illustration.svg";
 import logoImg from "../assets/images/logo.svg";
