@@ -8,7 +8,7 @@ import answerImg from "../assets/images/answer.svg";
 import { Button } from "../components/Button";
 import { Question } from "../components/Question";
 import { RoomCode } from "../components/RoomCode";
-
+// import { useAuth } from '../hooks/useAuth';
 import { useRoom } from "../hooks/useRoom";
 import { database } from "../services/firebase";
 
@@ -97,7 +97,7 @@ export function AdminRoom() {
                       type="button"
                       onClick={() => handleHighlightQuestion(question.id)}
                     >
-                      <img src={answerImg} alt="Dar destaque a pergunta" />
+                      <img src={answerImg} alt="Dar destaque à pergunta" />
                     </button>
                   </>
                 )}
@@ -114,7 +114,4 @@ export function AdminRoom() {
       </main>
     </div>
   );
-}
-function handleHighlightQuestion(id: string): void {
-  throw new Error("Function not implemented.");
 }

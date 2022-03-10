@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 #page-auth {
   display: flex;
   align-items: stretch;
@@ -6,11 +5,14 @@
 
   aside {
     flex: 7;
+
     background: #835afd;
     color: #fff;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     padding: 120px 80px;
 
     img {
@@ -33,7 +35,9 @@
 
   main {
     flex: 8;
+
     padding: 0 32px;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -94,11 +98,14 @@
     font-weight: 500;
     background: #ea4335;
     color: #fff;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     cursor: pointer;
     border: 0;
+
     transition: filter 0.2s;
 
     img {
@@ -113,6 +120,7 @@
   .separator {
     font-size: 14px;
     color: #a8a8b3;
+
     margin: 32px 0;
     display: flex;
     align-items: center;
